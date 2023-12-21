@@ -8,7 +8,7 @@
 PRODUCT_NAME = jedzenie_jedynaka
 
 // The application's bundle identifier
-PRODUCT_BUNDLE_IDENTIFIER = com.example.jedzenieJedynaka
+PRODUCT_BUNDLE_IDENTIFIER = comd.dawidskalski.jedzenieJedynaka
 
 // The copyright displayed in application information
-PRODUCT_COPYRIGHT = Copyright © 2023 com.example. All rights reserved.
+PRODUCT_COPYRIGHT = Copyright © 2023 comd.dawidskalski. All rights reserved.

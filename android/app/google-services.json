@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "125247294024",
+    "project_id": "jedzenie-jedynaka-222",
+    "storage_bucket": "jedzenie-jedynaka-222.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:125247294024:android:548ef323b8e67627df667d",
+        "android_client_info": {
+          "package_name": "comd.dawidskalski.jedzenie_jedynaka"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyALvPVdaea04rMFpH079aMsYukolBQffok"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
