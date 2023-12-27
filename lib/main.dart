@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:jedzenie_jedynaka/app/home/home_page.dart';
+import 'package:jedzenie_jedynaka/app/login/login_page.dart';
 import 'package:jedzenie_jedynaka/firebase_options.dart';
 
 void main() async {
@@ -19,7 +21,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
         title: 'Flutter Demo',
         theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.orange),
           useMaterial3: true,
         ),
         home: const RootPage());
@@ -38,10 +40,9 @@ class RootPage extends StatelessWidget {
         builder: (context, snapshot) {
           final user = snapshot.data;
           if (user == null) {
-            return Scaffold();
-          } else {
-            return Scaffold();
+            return LoginPage();
           }
+          return HomePage(user: user);
         });
   }
 }
