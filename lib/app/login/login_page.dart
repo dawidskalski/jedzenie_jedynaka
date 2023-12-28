@@ -31,10 +31,10 @@ class _LoginPageState extends State<LoginPage> {
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 colors: [
-                  Colors.orange.shade900,
-                  Colors.orange.shade700,
-                  Colors.orange.shade500,
-                  Colors.orange.shade400,
+                  Colors.purple.shade900,
+                  Colors.purple.shade700,
+                  Colors.purple.shade500,
+                  Colors.purple.shade400,
                 ],
               ),
               borderRadius: const BorderRadius.only(
@@ -210,7 +210,7 @@ class _LoginPageState extends State<LoginPage> {
                           isCreatingButton == false
                               ? 'Nie pamietam hasła? '
                               : 'Mam już konto!',
-                          style: TextStyle(fontSize: 15),
+                          style: const TextStyle(fontSize: 15),
                         ),
                         TextButton(
                           onPressed: () {
@@ -222,7 +222,7 @@ class _LoginPageState extends State<LoginPage> {
                             isCreatingButton == false
                                 ? 'Przypomnij'
                                 : 'Zaloguj się',
-                            style: TextStyle(fontSize: 15),
+                            style: const TextStyle(fontSize: 15),
                           ),
                         ),
                       ],
