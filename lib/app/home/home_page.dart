@@ -24,6 +24,8 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        leading: Icon(Icons.dining, size: 50),
+        title: Text('Jedyne Przepisy'),
         actions: [
           IconButton(
             onPressed: () {
@@ -71,8 +73,3 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
-
-
-
-
-

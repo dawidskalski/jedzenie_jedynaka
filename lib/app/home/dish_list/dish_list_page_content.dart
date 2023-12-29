@@ -24,7 +24,7 @@ class DishListPageContent extends StatelessWidget {
           return ListView(
             children: [
               for (final document in documents) ...[
-                dishesComponentWidget(
+                DishesComponentWidget(
                   dishName: document['dishName'],
                   recip: document['recip'],
                   description: document['description'],
@@ -38,8 +38,8 @@ class DishListPageContent extends StatelessWidget {
   }
 }
 
-class dishesComponentWidget extends StatelessWidget {
-  dishesComponentWidget({
+class DishesComponentWidget extends StatelessWidget {
+  const DishesComponentWidget({
     super.key,
     required this.dishName,
     required this.recip,
