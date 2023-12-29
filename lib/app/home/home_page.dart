@@ -1,6 +1,9 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:jedzenie_jedynaka/app/home/add/add_page_content.dart';
+import 'package:jedzenie_jedynaka/app/home/dish_list/dish_list_page_content.dart';
+import 'package:jedzenie_jedynaka/app/home/my_account/my_account_page_content.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({
@@ -58,20 +61,18 @@ class _HomePageState extends State<HomePage> {
       ),
       body: Builder(builder: (context) {
         if (_index == 0) {
-          return Text('1');
+          return DishListPageContent();
         }
         if (_index == 1) {
-          return Text('2');
+          return AddPageContent();
         }
-        return Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text('Jestes zalogowany ${widget.user.email}'),
-            ],
-          ),
-        );
+        return MyAccountPageContent(email: widget.user.email);
       }),
     );
   }
 }
+
+
+
+
+
