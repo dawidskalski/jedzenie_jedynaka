@@ -24,12 +24,36 @@ class DishListPageContent extends StatelessWidget {
           return ListView(
             children: [
               for (final document in documents) ...[
-                DishesComponentWidget(
-                  dishName: document['dishName'],
-                  recip: document['recip'],
-                  description: document['description'],
-                  time: document['time'].toString(),
-                  rating: document['rating'].toString(),
+                Dismissible(
+                  key: ValueKey(document.id),
+                  background: DecoratedBox(
+                    decoration: BoxDecoration(
+                        color: Colors.black12,
+                        borderRadius: BorderRadius.circular(80)),
+                    child: Align(
+                      alignment: Alignment.centerRight,
+                      child: Icon(
+                        Icons.delete,
+                        color: Colors.red,
+                      ),
+                    ),
+                  ),
+                  onDismissed: (_) {
+                    FirebaseFirestore.instance
+                        .collection('dish')
+                        .doc(document.id)
+                        .delete();
+                  },
+                  confirmDismiss: (direction) async {
+                    return direction == DismissDirection.endToStart;
+                  },
+                  child: DishesComponentWidget(
+                    dishName: document['dishName'],
+                    recip: document['recip'],
+                    description: document['description'],
+                    time: document['time'].toString(),
+                    rating: document['rating'].toString(),
+                  ),
                 ),
               ]
             ],
