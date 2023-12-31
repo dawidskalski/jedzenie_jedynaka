@@ -6,11 +6,11 @@ import 'package:jedzenie_jedynaka/app/login/login_page.dart';
 import 'package:jedzenie_jedynaka/firebase_options.dart';
 
 void main() async {
-  runApp(const MyApp());
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
         title: 'Flutter Demo',
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.purple),
-          useMaterial3: false,
+          useMaterial3: true,
         ),
         home: const RootPage());
   }

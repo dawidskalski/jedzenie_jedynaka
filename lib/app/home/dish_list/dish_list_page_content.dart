@@ -73,10 +73,10 @@ class DishesComponentWidget extends StatelessWidget {
                   children: [
                     ClipRRect(
                       borderRadius: BorderRadius.circular(12), // Image border
-                      child: SizedBox.fromSize(
-                        size: Size.fromRadius(70), // Image radius
-                        child: Image.asset('images/jpg.jpg'),
-                      ),
+                      child: SizedBox(
+                          width: 150,
+                          height: 150,
+                          child: Image.asset('images/avatar.jpg')),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(10),
