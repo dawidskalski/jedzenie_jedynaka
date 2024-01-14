@@ -39,7 +39,9 @@ dependencies:
   firebase_core: ^2.24.2
   curved_navigation_bar: ^1.0.3
   cloud_firestore: ^4.13.6
-  localization: ^2.1.1
+  flutter_slidable: ^3.0.1
+  image_picker: ^1.0.5
+  firebase_storage: ^11.6.0
 
 
 

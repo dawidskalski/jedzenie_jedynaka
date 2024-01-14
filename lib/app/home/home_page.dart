@@ -22,10 +22,10 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: const Color.fromRGBO(255, 255, 255, 1),
       appBar: AppBar(
-        leading: Icon(Icons.dining, size: 50),
-        title: Text('Jedyne Przepisy'),
+        leading: const Icon(Icons.dining, size: 50),
+        title: const Text('Jedyne Przepisy'),
         actions: [
           IconButton(
             onPressed: () {
@@ -36,8 +36,11 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
       bottomNavigationBar: CurvedNavigationBar(
+        index: _index,
+        height: 55,
         backgroundColor: Colors.white,
-        buttonBackgroundColor: Colors.purple,
+        color: Colors.black12,
+        buttonBackgroundColor: Colors.pink,
         items: const [
           Icon(
             Icons.list,
@@ -63,10 +66,14 @@ class _HomePageState extends State<HomePage> {
       ),
       body: Builder(builder: (context) {
         if (_index == 0) {
-          return DishListPageContent();
+          return const DishListPageContent();
         }
         if (_index == 1) {
-          return AddPageContent();
+          return AddPageContent(onSave: () {
+            setState(() {
+              _index = 0;
+            });
+          });
         }
         return MyAccountPageContent(email: widget.user.email);
       }),

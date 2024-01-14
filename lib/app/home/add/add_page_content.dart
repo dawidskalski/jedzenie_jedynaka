@@ -1,10 +1,16 @@
+import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 class AddPageContent extends StatefulWidget {
   const AddPageContent({
+    required this.onSave,
     super.key,
   });
+
+  final Function onSave;
 
   @override
   State<AddPageContent> createState() => _AddPageContentState();
@@ -12,15 +18,53 @@ class AddPageContent extends StatefulWidget {
 
 class _AddPageContentState extends State<AddPageContent> {
   var rating = 0.0;
-  var dishNameController = TextEditingController();
-  var recipController = TextEditingController();
-  var descriptionController = TextEditingController();
+  var dishNameController = '';
+  var recipController = '';
+  var descriptionController = '';
+  var errorMessage = '';
+  var getImageURL = '';
+  XFile? pickImage;
 
-  TimeOfDay? currentSelectedTime;
+  TimeOfDay? myVariableTimeOfDay;
   String formatTimeOfDay(TimeOfDay timeOfDay) {
     return timeOfDay.format(context);
   }
 
+  Future<void> uploadPhotoMethod(ImageSource source) async {
+    try {
+      ImagePicker imagePicker = ImagePicker();
+      XFile? file = await imagePicker.pickImage(source: source);
+
+      if (file != null) {
+        await uploadFileToStorage(file);
+        setState(() {
+          pickImage = file;
+        });
+      }
+    } catch (error) {
+      setState(() {
+        errorMessage = error.toString();
+      });
+    }
+  }
+
+  Future<void> uploadFileToStorage(XFile file) async {
+    String uniqueUploadFileName =
+        DateTime.now().microsecondsSinceEpoch.toString();
+
+    Reference referenceToStoragePanel = FirebaseStorage.instance.ref();
+    Reference referenceToCreateFolderInStoragePanel =
+        referenceToStoragePanel.child('images');
+    Reference referenceToUploadImage =
+        referenceToCreateFolderInStoragePanel.child(uniqueUploadFileName);
+
+    await referenceToUploadImage.putFile(
+        File(file.path), SettableMetadata(contentType: 'image/jpeg'));
+
+    getImageURL = await referenceToUploadImage.getDownloadURL();
+  }
+
+  
   @override
   Widget build(BuildContext context) {
     return ListView(
@@ -29,13 +73,103 @@ class _AddPageContentState extends State<AddPageContent> {
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             child: Column(
               children: [
-                Container(
-                    height: 210,
-                    color: Colors.amber,
-                    child: const Image(image: AssetImage('images/avatar.jpg'))),
-                const SizedBox(height: 15),
+                Stack(
+                  clipBehavior: Clip.none,
+                  children: [
+                    if (pickImage == null)
+                      const Image(
+                        image: AssetImage('images/avatar.jpg'),
+                        height: 250,
+                        width: 250,
+                      ),
+                    if (pickImage != null)
+                      Image(
+                        image: FileImage(
+                          File(pickImage!.path),
+                        ),
+                        width: 250,
+                        height: 250,
+                        fit: BoxFit.cover,
+                      ),
+                    Positioned(
+                      bottom: -25,
+                      right: -10,
+                      child: Container(
+                        width: 60,
+                        height: 60,
+                        decoration: BoxDecoration(
+                          color: Colors.black54,
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: IconButton(
+                          onPressed: () {
+                            showModalBottomSheet(
+                              context: context,
+                              builder: (builder) => SizedBox(
+                                height: 140,
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 20),
+                                      child: Column(
+                                        children: [
+                                          IconButton(
+                                              onPressed: () async {
+                                                uploadPhotoMethod(
+                                                    ImageSource.camera);
+                                              },
+                                              icon: const Icon(
+                                                Icons.photo_camera,
+                                                size: 50,
+                                                color: Colors.amber,
+                                              )),
+                                          const Text('Aparat')
+                                        ],
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 20),
+                                      child: Column(
+                                        children: [
+                                          IconButton(
+                                              onPressed: () async {
+                                                uploadPhotoMethod(
+                                                    ImageSource.gallery);
+                                              },
+                                              icon: const Icon(
+                                                Icons.photo,
+                                                size: 50,
+                                                color: Colors.amber,
+                                              )),
+                                          const Text('Galeria')
+                                        ],
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                          icon: const Icon(
+                            Icons.add_a_photo_outlined,
+                            size: 35,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+                Text(errorMessage),
+                const SizedBox(height: 30),
                 TextField(
-                  controller: dishNameController,
+                  onChanged: (value) {
+                    setState(() {
+                      dishNameController = value;
+                    });
+                  },
                   decoration: InputDecoration(
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
@@ -44,7 +178,11 @@ class _AddPageContentState extends State<AddPageContent> {
                 ),
                 const SizedBox(height: 15),
                 TextField(
-                  controller: descriptionController,
+                  onChanged: (value) {
+                    setState(() {
+                      descriptionController = value;
+                    });
+                  },
                   minLines: 1,
                   maxLines: 2,
                   decoration: InputDecoration(
@@ -56,7 +194,11 @@ class _AddPageContentState extends State<AddPageContent> {
                 ),
                 const SizedBox(height: 15),
                 TextField(
-                  controller: recipController,
+                  onChanged: (value) {
+                    setState(() {
+                      recipController = value;
+                    });
+                  },
                   minLines: 1,
                   maxLines: 4,
                   decoration: InputDecoration(
@@ -73,7 +215,7 @@ class _AddPageContentState extends State<AddPageContent> {
                         context: context, initialTime: TimeOfDay.now());
 
                     setState(() {
-                      currentSelectedTime = selectedTime;
+                      myVariableTimeOfDay = selectedTime;
                     });
                   },
                   child: Container(
@@ -89,9 +231,9 @@ class _AddPageContentState extends State<AddPageContent> {
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           Text(
-                            currentSelectedTime == null
-                                ? 'przygotowanie zajmuje'
-                                : formatTimeOfDay(currentSelectedTime!),
+                            myVariableTimeOfDay == null
+                                ? 'Przygotowanie trwa'
+                                : formatTimeOfDay(myVariableTimeOfDay!),
                             style: const TextStyle(
                                 fontSize: 20,
                                 color: Colors.white,
@@ -144,22 +286,24 @@ class _AddPageContentState extends State<AddPageContent> {
                 ),
                 const SizedBox(height: 10),
                 ElevatedButton(
-                  onPressed: () {
-                    FirebaseFirestore.instance.collection('dish').add({
-                      'dishName': dishNameController.text,
-                      'description': descriptionController.text,
-                      'recip': recipController.text,
-                      'time': formatTimeOfDay(currentSelectedTime!).toString(),
-                      'rating': rating
-                    });
-                    dishNameController.clear();
-                    descriptionController.clear();
-                    recipController.clear();
-                    setState(() {
-                      currentSelectedTime = null;
-                      rating = 0;
-                    });
-                  },
+                  onPressed: dishNameController.isEmpty
+                      ? null
+                      : () {
+                          FirebaseFirestore.instance.collection('dish').add({
+                            'dishName': dishNameController,
+                            'description': descriptionController,
+                            'recip': recipController,
+                            'time': formatTimeOfDay(myVariableTimeOfDay!),
+                            'rating': rating,
+                            'imgURL': getImageURL
+                          });
+
+                          setState(() {
+                            myVariableTimeOfDay = null;
+                            rating = 0;
+                          });
+                          widget.onSave();
+                        },
                   style:
                       ElevatedButton.styleFrom(backgroundColor: Colors.amber),
                   child: const Text(
