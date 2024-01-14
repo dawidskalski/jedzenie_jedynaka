@@ -123,6 +123,7 @@ class DishListPageContent extends StatelessWidget {
   }
 }
 
+// Widget który wyświetla kafalek z daniem
 class DishesComponentWidget extends StatelessWidget {
   const DishesComponentWidget(
       {super.key,
