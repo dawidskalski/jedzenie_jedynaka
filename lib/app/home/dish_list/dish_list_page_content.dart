@@ -1,6 +1,4 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
-
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -59,10 +57,9 @@ class DishListPageContent extends StatelessWidget {
                                           children: [
                                             ElevatedButton(
                                               onPressed: () {
-                                                FirebaseFirestore.instance
-                                                    .collection('dish')
-                                                    .doc(document.id)
-                                                    .delete();
+                                                context
+                                                    .read<DishListCubit>()
+                                                    .remove(document.id);
 
                                                 Navigator.of(context).pop();
                                               },

@@ -50,6 +50,10 @@ class DishListCubit extends Cubit<DishListState> {
       });
   }
 
+  Future<void> remove(documentID) async {
+    FirebaseFirestore.instance.collection('dish').doc(documentID).delete();
+  }
+
 // Zamykanie subskrypcji kiedy wychodzimy z page
   @override
   Future<void> close() {
