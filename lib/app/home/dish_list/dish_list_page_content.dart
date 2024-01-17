@@ -2,7 +2,9 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:jedzenie_jedynaka/app/home/dish_list/cubit/dish_list_cubit.dart';
 
 class DishListPageContent extends StatelessWidget {
   const DishListPageContent({
@@ -11,20 +13,18 @@ class DishListPageContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-        stream: FirebaseFirestore.instance
-            .collection('dish')
-            .orderBy('rating', descending: true)
-            .snapshots(),
-        builder: (context, snapshot) {
-          if (snapshot.hasError) {
-            return Text('Something went wrong ${snapshot.hasError.toString()}');
+    return BlocProvider(
+      create: (context) => DishListCubit()..start(),
+      child: BlocBuilder<DishListCubit, DishListState>(
+        builder: (context, state) {
+          if (state.errorMessage.isNotEmpty) {
+            return Text('Something went wrong ${state.errorMessage}');
           }
-          if (snapshot.connectionState == ConnectionState.waiting) {
+          if (state.isLoading) {
             return Center(child: const CircularProgressIndicator());
           }
 
-          final documents = snapshot.data!.docs;
+          final documents = state.documents;
           return ListView(
             children: [
               for (final document in documents) ...[
@@ -119,7 +119,9 @@ class DishListPageContent extends StatelessWidget {
               ]
             ],
           );
-        });
+        },
+      ),
+    );
   }
 }
 
