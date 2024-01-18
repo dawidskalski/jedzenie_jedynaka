@@ -3,7 +3,8 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:jedzenie_jedynaka/app/home/add/cubit/add_cubit.dart';
+import 'package:jedzenie_jedynaka/app/features/home/add/cubit/add_cubit.dart';
+
 
 class AddPageContent extends StatefulWidget {
   const AddPageContent({

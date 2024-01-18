@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:jedzenie_jedynaka/app/home/home_page.dart';
-import 'package:jedzenie_jedynaka/app/login/login_page.dart';
+import 'package:jedzenie_jedynaka/app/features/home/home_page.dart';
+import 'package:jedzenie_jedynaka/app/features/login/login_page.dart';
 import 'package:jedzenie_jedynaka/firebase_options.dart';
 
 void main() async {
