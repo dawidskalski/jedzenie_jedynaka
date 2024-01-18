@@ -1,6 +1,7 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:jedzenie_jedynaka/app/cubit/app_root_cubit.dart';
 import 'package:jedzenie_jedynaka/app/features/home/add/page/add_page_content.dart';
 import 'package:jedzenie_jedynaka/app/features/home/dish_list/page/dish_list_page_content.dart';
 import 'package:jedzenie_jedynaka/app/features/home/my_account/my_account_page_content.dart';
@@ -8,10 +9,10 @@ import 'package:jedzenie_jedynaka/app/features/home/my_account/my_account_page_c
 class HomePage extends StatefulWidget {
   const HomePage({
     super.key,
-    required this.user,
+    required this.email,
   });
 
-  final User user;
+  final String email;
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -29,7 +30,7 @@ class _HomePageState extends State<HomePage> {
         actions: [
           IconButton(
             onPressed: () {
-              FirebaseAuth.instance.signOut();
+              context.read<AppRootCubit>().signOut();
             },
             icon: const Icon(Icons.logout),
           ),
@@ -64,19 +65,21 @@ class _HomePageState extends State<HomePage> {
           });
         },
       ),
-      body: Builder(builder: (context) {
-        if (_index == 0) {
-          return const DishListPageContent();
-        }
-        if (_index == 1) {
-          return AddPageContent(onSave: () {
-            setState(() {
-              _index = 0;
+      body: Builder(
+        builder: (context) {
+          if (_index == 0) {
+            return const DishListPageContent();
+          }
+          if (_index == 1) {
+            return AddPageContent(onSave: () {
+              setState(() {
+                _index = 0;
+              });
             });
-          });
-        }
-        return MyAccountPageContent(email: widget.user.email);
-      }),
+          }
+          return MyAccountPageContent(email: widget.email);
+        },
+      ),
     );
   }
 }
