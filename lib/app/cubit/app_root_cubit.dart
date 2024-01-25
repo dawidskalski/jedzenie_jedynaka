@@ -8,7 +8,7 @@ part 'app_root_state.dart';
 
 class AppRootCubit extends Cubit<AppRootState> {
   AppRootCubit()
-      : super(AppRootState(
+      : super(const AppRootState(
           user: null,
           errorMessage: '',
           isLoading: false,
@@ -16,9 +16,9 @@ class AppRootCubit extends Cubit<AppRootState> {
 
   StreamSubscription? _streamSubscription;
 
-  Future<void> signIn() async {
+  Future<void> start() async {
     emit(
-      AppRootState(
+      const AppRootState(
         user: null,
         isLoading: true,
         errorMessage: '',
@@ -46,6 +46,51 @@ class AppRootCubit extends Cubit<AppRootState> {
           );
         },
       );
+  }
+
+  Future<void> signIn({required String email, required String password}) async {
+    try {
+      await FirebaseAuth.instance
+          .signInWithEmailAndPassword(email: email, password: password);
+    } catch (error) {
+      emit(
+        AppRootState(
+          user: null,
+          isLoading: false,
+          errorMessage: error.toString(),
+        ),
+      );
+    }
+  }
+
+  Future<void> createAccount(
+      {required String email, required String password}) async {
+    try {
+      await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(email: email, password: password);
+    } catch (error) {
+      emit(
+        AppRootState(
+          user: null,
+          isLoading: false,
+          errorMessage: error.toString(),
+        ),
+      );
+    }
+  }
+
+  Future<void> remindPassword({required String email}) async {
+    try {
+      await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+    } catch (error) {
+      emit(
+        AppRootState(
+          user: null,
+          isLoading: false,
+          errorMessage: error.toString(),
+        ),
+      );
+    }
   }
 
   Future<void> signOut() async {

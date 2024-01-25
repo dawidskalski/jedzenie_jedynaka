@@ -6,8 +6,9 @@ class AppRootState {
   final bool isLoading;
   final String errorMessage;
 
-  AppRootState(
-      {required this.user,
-      required this.isLoading,
-      required this.errorMessage});
+  const AppRootState({
+    required this.user,
+    required this.isLoading,
+    required this.errorMessage,
+  });
 }

@@ -7,7 +7,7 @@ part 'dish_list_state.dart';
 
 class DishListCubit extends Cubit<DishListState> {
   DishListCubit()
-      : super(DishListState(
+      : super(const DishListState(
           documents: [],
           errorMessage: '',
           isLoading: false,
@@ -18,7 +18,7 @@ class DishListCubit extends Cubit<DishListState> {
 //Wywoływnaie początkowej metody "start" podczas uruchamiania aplikacji.
   Future<void> start() async {
     emit(
-      DishListState(
+      const DishListState(
         documents: [],
         errorMessage: '',
         isLoading: true,
@@ -42,7 +42,7 @@ class DishListCubit extends Cubit<DishListState> {
     )..onError((error) {
         emit(
           DishListState(
-            documents: [],
+            documents: const [],
             errorMessage: error.toString(),
             isLoading: false,
           ),

@@ -6,7 +6,7 @@ class DishListState {
   final String errorMessage;
   final bool isLoading;
 
-  DishListState(
+  const DishListState(
       {required this.documents,
       required this.errorMessage,
       required this.isLoading});

@@ -1,15 +1,13 @@
 import 'dart:async';
-
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:meta/meta.dart';
-
 part 'add_state.dart';
 
 class AddCubit extends Cubit<AddState> {
   AddCubit()
-      : super(AddState(
-          errosMessage: '',
+      : super(const AddState(
+          errorMessage: '',
         ));
 
   Future<void> addDish({
@@ -32,7 +30,7 @@ class AddCubit extends Cubit<AddState> {
     } catch (error) {
       emit(
         AddState(
-          errosMessage: error.toString(),
+          errorMessage: error.toString(),
         ),
       );
     }

@@ -28,7 +28,7 @@ class RootPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => AppRootCubit()..signIn(),
+      create: (context) => AppRootCubit()..start(),
       child: BlocBuilder<AppRootCubit, AppRootState>(
         builder: (context, state) {
           final user = state.user;
