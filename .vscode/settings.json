@@ -1,4 +1,6 @@
 {
-    "accessibility.alert.format": "always",
-    "window.commandCenter": true
+    "window.commandCenter": true,
+    "accessibility.signals.format": {
+        "announcement": "always"
+    }
 }

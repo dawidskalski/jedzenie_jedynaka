@@ -3,6 +3,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:jedzenie_jedynaka/app/domain/repositories/meal_repository.dart';
 import 'package:jedzenie_jedynaka/app/features/home/add/cubit/add_cubit.dart';
 
 class AddPageContent extends StatefulWidget {
@@ -62,7 +63,7 @@ class _AddPageContentState extends State<AddPageContent> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => AddCubit(),
+      create: (context) => AddCubit(MealRepository()),
       child: BlocListener<AddCubit, AddState>(
         listener: (context, state) {
           if (state.errorMessage.isNotEmpty) {

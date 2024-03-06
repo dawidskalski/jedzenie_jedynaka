@@ -2,7 +2,7 @@ part of 'dish_list_cubit.dart';
 
 @immutable
 class DishListState {
-  final List<QueryDocumentSnapshot<Map<String, dynamic>>> documents;
+  final List<MealModel> documents;
   final String errorMessage;
   final bool isLoading;
 

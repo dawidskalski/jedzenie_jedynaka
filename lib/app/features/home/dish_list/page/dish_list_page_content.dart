@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:jedzenie_jedynaka/app/domain/repositories/meal_repository.dart';
 import 'package:jedzenie_jedynaka/app/features/home/dish_list/cubit/dish_list_cubit.dart';
 
 class DishListPageContent extends StatelessWidget {
@@ -12,7 +13,7 @@ class DishListPageContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => DishListCubit()..start(),
+      create: (context) => DishListCubit(MealRepository())..start(),
       child: BlocBuilder<DishListCubit, DishListState>(
         builder: (context, state) {
           if (state.errorMessage.isNotEmpty) {
@@ -104,12 +105,12 @@ class DishListPageContent extends StatelessWidget {
                       ],
                     ),
                     child: DishesComponentWidget(
-                      dishName: document['dishName'],
-                      recip: document['recip'],
-                      description: document['description'],
-                      time: document['time'],
-                      rating: document['rating'].toString(),
-                      imgURL: document['imgURL'],
+                      dishName: document.dishName,
+                      recip: document.recip,
+                      description: document.description,
+                      time: document.time,
+                      rating: document.rating.toString(),
+                      imgURL: document.imgURL,
                     ),
                   ),
                 ),

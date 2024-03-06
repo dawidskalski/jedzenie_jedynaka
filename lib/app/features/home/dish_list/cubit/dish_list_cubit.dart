@@ -1,18 +1,20 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:jedzenie_jedynaka/app/domain/models/meal_model.dart';
+import 'package:jedzenie_jedynaka/app/domain/repositories/meal_repository.dart';
 import 'package:meta/meta.dart';
 
 part 'dish_list_state.dart';
 
 class DishListCubit extends Cubit<DishListState> {
-  DishListCubit()
+  DishListCubit(this._mealRepository)
       : super(const DishListState(
           documents: [],
           errorMessage: '',
           isLoading: false,
         ));
 
+  final MealRepository _mealRepository;
   StreamSubscription? _streamSubscription;
 
 //Wywoływnaie początkowej metody "start" podczas uruchamiania aplikacji.
@@ -25,15 +27,11 @@ class DishListCubit extends Cubit<DishListState> {
       ),
     );
 
-    _streamSubscription = FirebaseFirestore.instance
-        .collection('dish')
-        .orderBy('rating', descending: true)
-        .snapshots()
-        .listen(
+    _streamSubscription = _mealRepository.getItemsfromDateBase().listen(
       (event) {
         emit(
           DishListState(
-            documents: event.docs,
+            documents: event,
             errorMessage: '',
             isLoading: false,
           ),
@@ -51,7 +49,7 @@ class DishListCubit extends Cubit<DishListState> {
   }
 
   Future<void> remove(documentID) async {
-    FirebaseFirestore.instance.collection('dish').doc(documentID).delete();
+    _mealRepository.removePosition(documentID);
   }
 
 // Zamykanie subskrypcji kiedy wychodzimy z page
