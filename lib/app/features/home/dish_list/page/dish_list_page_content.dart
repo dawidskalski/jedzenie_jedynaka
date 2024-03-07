@@ -105,13 +105,13 @@ class DishListPageContent extends StatelessWidget {
                       ],
                     ),
                     child: DishesComponentWidget(
-                      dishName: document.dishName,
-                      recip: document.recip,
-                      description: document.description,
-                      time: document.time,
-                      rating: document.rating.toString(),
-                      imgURL: document.imgURL,
-                    ),
+                        dishName: document.dishName,
+                        recip: document.recip,
+                        description: document.description,
+                        rating: document.rating,
+                        imgURL: document.imgURL,
+                        hour: document.hour,
+                        minute: document.minute),
                   ),
                 ),
               ]
@@ -130,15 +130,17 @@ class DishesComponentWidget extends StatelessWidget {
       required this.dishName,
       required this.recip,
       required this.description,
-      required this.time,
+      required this.hour,
+      required this.minute,
       required this.rating,
       required this.imgURL});
 
   final String dishName;
   final String description;
   final String recip;
-  final String rating;
-  final String time;
+  final double rating;
+  final int hour;
+  final int minute;
   final String imgURL;
 
   @override
@@ -237,7 +239,7 @@ class DishesComponentWidget extends StatelessWidget {
                             ),
                             SizedBox(width: 5),
                             Text(
-                              rating,
+                              rating.toString(),
                               style: TextStyle(
                                   fontSize: 16, fontWeight: FontWeight.bold),
                             ),
@@ -252,7 +254,7 @@ class DishesComponentWidget extends StatelessWidget {
                             ),
                             SizedBox(width: 5),
                             Text(
-                              '$time min',
+                              '$hour godz.   $minute min.',
                               style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,

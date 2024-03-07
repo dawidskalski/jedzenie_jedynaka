@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:jedzenie_jedynaka/app/domain/repositories/meal_repository.dart';
+import 'package:jedzenie_jedynaka/app/domain/widgets/timer_widget/timer_widget.dart';
 import 'package:jedzenie_jedynaka/app/features/home/add/cubit/add_cubit.dart';
 
 class AddPageContent extends StatefulWidget {
@@ -23,14 +24,11 @@ class _AddPageContentState extends State<AddPageContent> {
   var dishNameController = '';
   var recipController = '';
   var descriptionController = '';
+  int hour = 0;
+  int minute = 0;
 
   var getImageURL = '';
   XFile? pickImage;
-
-  TimeOfDay? myVariableTimeOfDay;
-  String formatTimeOfDay(TimeOfDay timeOfDay) {
-    return timeOfDay.format(context);
-  }
 
   Future<void> uploadPhotoMethod(ImageSource source) async {
     ImagePicker imagePicker = ImagePicker();
@@ -226,12 +224,14 @@ class _AddPageContentState extends State<AddPageContent> {
                         const SizedBox(height: 15),
                         InkWell(
                           onTap: () async {
-                            final selectedTime = await showTimePicker(
-                                context: context, initialTime: TimeOfDay.now());
-
-                            setState(() {
-                              myVariableTimeOfDay = selectedTime;
-                            });
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (builder) => TimerWidget(
+                                  hour: hour,
+                                  minute: minute,
+                                ),
+                              ),
+                            );
                           },
                           child: Container(
                             width: MediaQuery.of(context).size.width * 0.7,
@@ -247,9 +247,9 @@ class _AddPageContentState extends State<AddPageContent> {
                                     MainAxisAlignment.spaceAround,
                                 children: [
                                   Text(
-                                    myVariableTimeOfDay == null
-                                        ? 'Przygotowanie trwa'
-                                        : formatTimeOfDay(myVariableTimeOfDay!),
+                                    hour == 0 || minute == 0
+                                        ? 'Czas Przygotowania'
+                                        : '$hour :godz.  $minute min.',
                                     style: const TextStyle(
                                         fontSize: 20,
                                         color: Colors.white,
@@ -306,16 +306,16 @@ class _AddPageContentState extends State<AddPageContent> {
                               ? null
                               : () {
                                   context.read<AddCubit>().addDish(
-                                      dishName: dishNameController,
-                                      description: descriptionController,
-                                      imgURL: getImageURL,
-                                      rating: rating,
-                                      recip: recipController,
-                                      time: formatTimeOfDay(
-                                          myVariableTimeOfDay!));
+                                        dishName: dishNameController,
+                                        description: descriptionController,
+                                        imgURL: getImageURL,
+                                        rating: rating,
+                                        recip: recipController,
+                                        hour: hour,
+                                        minute: minute,
+                                      );
 
                                   setState(() {
-                                    myVariableTimeOfDay = null;
                                     rating = 0;
                                   });
                                   widget.onSave();

@@ -17,7 +17,8 @@ class MealRepository {
               imgURL: e['imgURL'],
               rating: e['rating'],
               recip: e['recip'],
-              time: e['time'],
+              hour: e['hour'],
+              minute: e['minute'],
             ),
           )
           .toList();
@@ -34,7 +35,8 @@ class MealRepository {
     required String imgURL,
     required double rating,
     required String recip,
-    required String time,
+    required int hour,
+    required int minute,
   }) async {
     FirebaseFirestore.instance.collection('dish').add({
       'dishName': dishName,
@@ -42,7 +44,8 @@ class MealRepository {
       'imgURL': imgURL,
       'rating': rating,
       'recip': recip,
-      'time': time,
+      'hour': hour,
+      'minute': minute,
     });
   }
 }

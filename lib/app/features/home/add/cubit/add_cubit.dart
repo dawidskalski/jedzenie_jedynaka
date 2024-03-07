@@ -18,16 +18,19 @@ class AddCubit extends Cubit<AddState> {
     required String imgURL,
     required double rating,
     required String recip,
-    required String time,
+    required int hour,
+    required int minute,
   }) async {
     try {
       _mealRepository.addDishToDateBase(
-          dishName: dishName,
-          description: description,
-          imgURL: imgURL,
-          rating: rating,
-          recip: recip,
-          time: time);
+        dishName: dishName,
+        description: description,
+        imgURL: imgURL,
+        rating: rating,
+        recip: recip,
+        hour: hour,
+        minute: minute,
+      );
     } catch (error) {
       emit(
         AddState(
