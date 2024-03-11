@@ -1,14 +1,11 @@
 part of 'app_root_cubit.dart';
 
-@immutable
-class AppRootState {
-  final User? user;
-  final bool isLoading;
-  final String errorMessage;
-
-  const AppRootState({
-    required this.user,
-    required this.isLoading,
-    required this.errorMessage,
-  });
+@freezed
+class AppRootState with _$AppRootState {
+  const AppRootState._();
+  const factory AppRootState({
+    required UserModel? user,
+    required bool isLoading,
+    required String errorMessage,
+  }) = _AppRootState;
 }

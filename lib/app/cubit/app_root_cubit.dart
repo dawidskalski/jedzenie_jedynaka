@@ -1,87 +1,34 @@
 import 'dart:async';
-
 import 'package:bloc/bloc.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:meta/meta.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:jedzenie_jedynaka/app/domain/models/user_model.dart';
+import 'package:jedzenie_jedynaka/app/domain/repositories/user_repository.dart';
 
 part 'app_root_state.dart';
+part 'app_root_cubit.freezed.dart';
 
 class AppRootCubit extends Cubit<AppRootState> {
-  AppRootCubit()
+  AppRootCubit(this._userRepository)
       : super(const AppRootState(
           user: null,
           errorMessage: '',
-          isLoading: false,
+          isLoading: true,
         ));
 
-  StreamSubscription? _streamSubscription;
+  final UserRepository _userRepository;
+  StreamSubscription? streamSubscription;
 
   Future<void> start() async {
-    emit(
-      const AppRootState(
-        user: null,
-        isLoading: true,
-        errorMessage: '',
-      ),
-    );
-
-    _streamSubscription = FirebaseAuth.instance.authStateChanges().listen(
-      (currentUser) {
+    try {
+      streamSubscription = _userRepository.actionEvent().listen((event) {
         emit(
           AppRootState(
-            user: currentUser,
+            user: event,
             isLoading: false,
             errorMessage: '',
           ),
         );
-      },
-    )..onError(
-        (error) {
-          emit(
-            AppRootState(
-              user: null,
-              isLoading: false,
-              errorMessage: error.toString(),
-            ),
-          );
-        },
-      );
-  }
-
-  Future<void> signIn({required String email, required String password}) async {
-    try {
-      await FirebaseAuth.instance
-          .signInWithEmailAndPassword(email: email, password: password);
-    } catch (error) {
-      emit(
-        AppRootState(
-          user: null,
-          isLoading: false,
-          errorMessage: error.toString(),
-        ),
-      );
-    }
-  }
-
-  Future<void> createAccount(
-      {required String email, required String password}) async {
-    try {
-      await FirebaseAuth.instance
-          .createUserWithEmailAndPassword(email: email, password: password);
-    } catch (error) {
-      emit(
-        AppRootState(
-          user: null,
-          isLoading: false,
-          errorMessage: error.toString(),
-        ),
-      );
-    }
-  }
-
-  Future<void> remindPassword({required String email}) async {
-    try {
-      await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+      });
     } catch (error) {
       emit(
         AppRootState(
@@ -94,12 +41,56 @@ class AppRootCubit extends Cubit<AppRootState> {
   }
 
   Future<void> signOut() async {
-    FirebaseAuth.instance.signOut();
+    _userRepository.signOut();
   }
 
-  @override
-  Future<void> close() {
-    _streamSubscription?.cancel();
-    return super.close();
+  Future<void> signIn({
+    required String email,
+    required String password,
+  }) async {
+    try {
+      _userRepository.signIn(email: email, password: password);
+    } catch (error) {
+      emit(
+        AppRootState(
+          user: null,
+          isLoading: false,
+          errorMessage: error.toString(),
+        ),
+      );
+    }
+  }
+
+  Future<void> createAccount({
+    required String email,
+    required String password,
+  }) async {
+    try {
+      _userRepository.createAccount(email: email, password: password);
+    } catch (error) {
+      emit(
+        AppRootState(
+          user: null,
+          isLoading: false,
+          errorMessage: error.toString(),
+        ),
+      );
+    }
+  }
+
+  Future<void> remindPassword({
+    required String email,
+  }) async {
+    try {
+      _userRepository.remindPassword(email: email);
+    } catch (error) {
+      emit(
+        AppRootState(
+          user: null,
+          isLoading: false,
+          errorMessage: error.toString(),
+        ),
+      );
+    }
   }
 }

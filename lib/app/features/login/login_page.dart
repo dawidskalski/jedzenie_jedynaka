@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jedzenie_jedynaka/app/cubit/app_root_cubit.dart';
 
+import 'package:jedzenie_jedynaka/app/domain/repositories/user_repository.dart';
+
 class LoginPage extends StatefulWidget {
   LoginPage({
     super.key,
@@ -20,7 +22,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => AppRootCubit(),
+      create: (context) => AppRootCubit(UserRepository()),
       child: BlocListener<AppRootCubit, AppRootState>(
         listener: (context, state) {
           if (state.errorMessage.isNotEmpty) {
