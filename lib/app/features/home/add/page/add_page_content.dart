@@ -224,14 +224,16 @@ class _AddPageContentState extends State<AddPageContent> {
                         const SizedBox(height: 15),
                         InkWell(
                           onTap: () async {
-                            Navigator.of(context).push(
+                            final (hour, minute) =
+                                await Navigator.of(context).push(
                               MaterialPageRoute(
-                                builder: (builder) => TimerWidget(
-                                  hour: hour,
-                                  minute: minute,
-                                ),
+                                builder: (builder) => const TimerWidget(),
                               ),
                             );
+                            setState(() {
+                              this.hour = hour;
+                              this.minute = minute;
+                            });
                           },
                           child: Container(
                             width: MediaQuery.of(context).size.width * 0.7,
@@ -249,7 +251,7 @@ class _AddPageContentState extends State<AddPageContent> {
                                   Text(
                                     hour == 0 || minute == 0
                                         ? 'Czas Przygotowania'
-                                        : '$hour :godz.  $minute min.',
+                                        : '$hour godz. $minute min.',
                                     style: const TextStyle(
                                         fontSize: 20,
                                         color: Colors.white,

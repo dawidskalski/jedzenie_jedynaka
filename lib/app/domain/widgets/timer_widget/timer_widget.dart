@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
 
-class TimerWidget extends StatelessWidget {
-  TimerWidget({super.key, required this.hour, required this.minute});
+class TimerWidget extends StatefulWidget {
+  const TimerWidget({
+    super.key,
+  });
 
-  int hour;
-  int minute;
+  @override
+  State<TimerWidget> createState() => _TimerWidgetState();
+}
+
+class _TimerWidgetState extends State<TimerWidget> {
+  var hour = 0;
+  var minute = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -73,7 +80,14 @@ class TimerWidget extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.all(20.0),
-            child: ElevatedButton(onPressed: () {}, child: const Text('Dodaj')),
+            child: ElevatedButton(
+              onPressed: () {
+                
+                Navigator.of(context).pop((hour, minute));
+                
+              },
+              child: const Text('Dodaj'),
+            ),
           )
         ],
       ),
@@ -114,3 +128,4 @@ class MyHours extends StatelessWidget {
     );
   }
 }
+
